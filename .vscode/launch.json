@@ -10,7 +10,7 @@
             "type": "node",
             "program": "${workspaceFolder}/main.ts",
             "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "deno",
+            "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run",
                 "--inspect-brk",

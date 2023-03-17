@@ -10,7 +10,7 @@ The [Water Balance App](https://livingatlasdev.arcgis.com/waterbalance/) is a we
 * Click anywhere on the map to see how a chosen variable has changed over time, and click anywhere on the main graph (on the center) to switch the map to that month of interest.
 * The water balance panel (on the left) shows how much recharge or depletion occurred during your chosen month, and how this compares to what’s normal.
 * The trend analyzer panel (on the right) shows how your chosen variable was different in the same month during other years. This panel also allows you to see the seasonal variation during a normal year (by graphing the average for each month) or aggregate the time series into annual time steps to see the long term trend more clearly.
-
+we
 ## Instructions
 
 To begin, clone this repository to your computer, from the project's root directory, install the required packages (dependencies):
