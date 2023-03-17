@@ -9,6 +9,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports =  (env, options)=> {
 
     const devMode = options.mode === 'development' ? true : false;
+    const prodMode = options.mode === 'production' ? true : false;
 
     return {
         entry: path.resolve(__dirname, './src/index.tsx'),
@@ -17,7 +18,7 @@ module.exports =  (env, options)=> {
             filename: '[name].[contenthash].js',
             chunkFilename: '[name].[contenthash].js',
         },
-        devtool: devMode ? 'source-map' : 'none',
+        devtool: devMode ? 'source-map' : 'source-map',
         resolve: {
             extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
         },

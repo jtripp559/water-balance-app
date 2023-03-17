@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { select, mouse } from 'd3';
+import { select, pointer } from 'd3';
 
 import {
     Scales,
@@ -58,7 +58,7 @@ const MouseEventsRect:React.FC<Props> = ({
                 setItemOnHover(undefined);
             })
             .on("mousemove", function(){
-                const mousePosX = mouse(this)[0];
+                const mousePosX = pointer(this)[0];
                 getItemByMousePos(mousePosX);
                 setItemOnHover(getItemByMousePos(mousePosX));
             });

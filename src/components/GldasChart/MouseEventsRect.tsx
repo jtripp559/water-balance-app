@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { 
     select,
-    mouse
+    pointer
 } from 'd3';
 
 import {
@@ -72,7 +72,7 @@ const MouseEventsRect:React.FC<Props> = ({
                 setItemOnHover(null);
             })
             .on("mousemove", function(){
-                const mousePosX = mouse(this)[0];
+                const mousePosX = pointer(this)[0];
                 setItemOnHover(getItemByMousePos(mousePosX));
             });
     };

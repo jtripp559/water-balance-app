@@ -4,8 +4,7 @@ import {
     scaleTime,
     scaleBand,
     scaleLinear,
-    zoom as d3Zoom,
-    event as d3Event
+    zoom as d3Zoom
 } from 'd3';
 import useWindowSize from '../../hooks/useWindowSize';
 import { HeaderHeight } from './Header';
@@ -168,7 +167,7 @@ const SvgContainer:React.FC<Props> = ({
 
     const onZoomed = ()=>{
         const { width } = dimensionRef.current;
-        const newRange = [ 0, width ].map(d => d3Event.transform.applyX(d) as number);
+        const newRange = [ 0, width ].map(d => d3Zoom.transform.applyX(d) as number);
 
         scales.x.range(newRange);
 
