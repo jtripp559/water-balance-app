@@ -25,6 +25,9 @@ let timeExtentForGldasLayers:Date[] = [];
 const LayersInfo = location.host === 'livingatlasdev.arcgis.com' 
     ? GldasLayersInfoDEV 
     : GldasLayersInfo;
+/* const LayersInfo = location.host === 'livingatlas.arcgis.com' 
+    ? GldasLayersInfo 
+    : GldasLayersInfo; */
 
 export const getTimeExtent = async(): Promise<Date[]>=>{
 
