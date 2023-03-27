@@ -66,6 +66,7 @@ const MonthlyTrendChart:React.FC<Props> = ({
         let maxVal = Number.NEGATIVE_INFINITY;
         let minVal = Number.POSITIVE_INFINITY;
 
+        console.log('data[activeLayer].forEach');
         data[activeLayer].forEach(d=>{
             const values = d.map(d=>d.value);
             const maxInGroup = max(values);

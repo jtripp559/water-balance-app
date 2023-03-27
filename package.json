@@ -55,6 +55,7 @@
     "webpack-dev-server": "^4.12.0"
   },
   "dependencies": {
+    "@arcgis/core": "^4.26.5",
     "@esri/calcite-components": "^1.1.0",
     "@types/arcgis-js-api": "^4.26.0",
     "@types/d3": "^7.4.0",
@@ -75,6 +76,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
+    "react-redux": "^8.0.5",
     "shortid": "^2.2.16",
     "styled-components": "^5.3.9"
   }

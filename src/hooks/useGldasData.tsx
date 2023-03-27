@@ -21,7 +21,7 @@ interface useGldasDataResponse {
 }
 
 const useGldasData = (queryLocation:IPoint): useGldasDataResponse=>{
-
+    
     const [ gldasDataResponse, setResponse ] = React.useState<FetchResponse>();
 
     const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
@@ -29,23 +29,25 @@ const useGldasData = (queryLocation:IPoint): useGldasDataResponse=>{
     const [ isFailed, setIsFaied ] = React.useState<boolean>(false);
 
     const fetch = async()=>{
-
         setIsLoading(true);
         setIsFaied(false);
 
         try {
+            console.log('queryLocation:',queryLocation);
+            console.log('await getGLDASdata');
             const {
                 identifyResults,
                 identifyResultsByMonth
             } = await getGLDASdata(queryLocation);
-    
+
+            console.log('setResponse');
             setResponse({
                 gldasData: identifyResults,
                 gldasDataByMonth: identifyResultsByMonth
             });
 
         } catch(err){
-            // console.log(err);
+            console.log(err);
             setIsFaied(true);
             setResponse(null);
         }

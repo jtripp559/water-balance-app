@@ -63,6 +63,8 @@ const LayerSwitcher:React.FC<Props> = ({
 })=>{
 
     const getMenuItems = ()=>{
+        console.log('getMenuItems')
+        console.log('Data:',Data)
         return Data.map(d=>{
 
             const { key, value } = d;

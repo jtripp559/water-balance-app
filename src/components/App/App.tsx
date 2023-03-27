@@ -83,26 +83,21 @@ const App:React.FC<Props> = ({
                     gldasDataByMonth={gldasDataByMonth}
                     timeExtentItem={previewTimeExtentItem || selectedTimeExtentItem}
                 />
-
                 <SummaryCard 
                     data={gldasData}
                     gldasDataByMonth={gldasDataByMonth}
                     timeExtentItem={previewTimeExtentItem || selectedTimeExtentItem}
                 />
-
                 <GldasChart 
                     data={gldasData}
                     timeExtent={timeExtentForGldasLayers}
                     activeLayer={activeLayer}
                     // activeTime={activeTime}
-
                     selectedTimeExtentItem={selectedTimeExtentItem}
                     previewTimeExtentItem={previewTimeExtentItem}
-
                     selectedItemOnChange={setSelectedTimeExtentItem}
                     previewItemOnChange={setPreviewTimeExtentItem}
                 />
-
                 <MonthlyTrendChart 
                     data={gldasDataByMonth}
                     timeExtentItem={previewTimeExtentItem || selectedTimeExtentItem}

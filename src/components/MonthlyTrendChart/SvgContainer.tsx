@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Component, PropsWithChildren} from "react";
 import styled from 'styled-components';
 import { select, scaleBand, scaleLinear } from 'd3';
 import { HeaderHeight } from './Header';
@@ -47,7 +48,7 @@ interface Props {
     yDomain?: number[];
 };
 
-const SvgContainer:React.FC<Props> = ({
+const SvgContainer:React.FC<PropsWithChildren<Props>> = ({
     xDomain,
     yDomain,
     children

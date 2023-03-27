@@ -2,6 +2,7 @@ import * as React from 'react';
 import { add } from 'date-fns';
 
 import { loadModules } from 'esri-loader';
+// import TimeExtent from "@arcgis/core/TimeExtent.js";
 import IMapView from 'esri/views/MapView';
 import ITimeExtent from "esri/TimeExtent";
 
@@ -38,12 +39,13 @@ const GldasLayer:React.FC<Props> = ({
         }
 
         type Modules = [typeof ITimeExtent];
-
+        
         const [ 
             TimeExtent
         ] = await (loadModules([
             'esri/TimeExtent',
         ]) as Promise<Modules>);
+        // Promise<Modules> = TimeExtent;
 
         const start = new Date(selectedTimeExtentItem.date);
         const end = add(start, { days: 1});
@@ -61,7 +63,7 @@ const GldasLayer:React.FC<Props> = ({
         if(!layerName || !selectedTimeExtentItem || !mapView){
             return;
         }
-
+        console.log('mapView.map.layers.forEach');
         mapView.map.layers.forEach(d=>{
             d.visible = d.title === layerName; 
         });

@@ -14,7 +14,7 @@ interface AppContextProps {
 }
 
 interface AppContextProviderProps {
-    // children: React.ReactNode;
+    children: React.ReactNode;
 };
 
 export const AppContext = React.createContext<AppContextProps>(null);

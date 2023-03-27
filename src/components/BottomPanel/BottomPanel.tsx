@@ -30,6 +30,7 @@ const LoaderDiv = styled.div`
 interface Props {
     isLoading?: boolean;
     isMobile?: boolean;
+    children: React.ReactNode;
 }
 
 const BottomPanel:React.FC<Props> = ({

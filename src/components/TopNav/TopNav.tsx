@@ -39,7 +39,7 @@ const TopNav:React.FC<Props> = ({
 })=>{
     return (
         <TopNavContainer>
-            <TitleText>Water Balance App</TitleText>
+            <TitleText>RRG Water Balance App</TitleText>
             <div>
                 <span className='font-size--2 tablet-hide margin-right-half'>
                     Click anywhere on earth to see how the water balance is changing over time
