@@ -83,6 +83,9 @@ const ChangeInStorageIndicator:React.FC<Props> = ({
     const getChangeInStorageValueIndicator = ()=>{
 
         const { index } = timeExtentItem;
+        console.log('data:',data);
+        console.log('index:',index);
+        console.log('data["Change in Storage"]:',data["Change in Storage"]);
 
         const changeInStorageVal = data["Change in Storage"][index].value;
 

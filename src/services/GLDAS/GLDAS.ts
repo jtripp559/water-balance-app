@@ -74,7 +74,20 @@ export const getGLDASdata = async(queryLocation: IPoint):Promise<{
         await getTimeExtent();
     }
 
+    // {x:-80.6686631822437,y:40.195471618674176,spatialReference:{wkid:4326}}
+
+    
+
     const params = {
+        geometry: '{x:' + queryLocation.longitude + ',y:' + queryLocation.latitude+'}',
+        returnGeometry: 'false',
+        returnCatalogItems: 'true',
+        renderingRule: {"rasterFunction":"None"},
+        geometryType: 'esriGeometryPoint',
+        f: 'json'
+    };
+
+/*    const params = {
         geometry: {
             x: queryLocation.longitude,
             y: queryLocation.latitude,
@@ -87,7 +100,7 @@ export const getGLDASdata = async(queryLocation: IPoint):Promise<{
         renderingRule: {"rasterFunction":"None"},
         geometryType: 'esriGeometryPoint',
         f: 'json'
-    };
+    }; */
     console.log('params:',params);
 
     const identifyTasks = GldasLayerNames.map(layerName=>{
@@ -96,13 +109,28 @@ export const getGLDASdata = async(queryLocation: IPoint):Promise<{
         console.log('layerName',layerName);
         console.log('layerInfo',layerInfo);
         console.log('layerInfo.url',layerInfo.url);
+        console.log('layerInfo.mosaicRule',layerInfo.mosaicRule);
 
-        return axios.get(layerInfo.url + '/identify', { 
+/*        return axios.get(layerInfo.url + '/identify', { 
             params: {
                 ...params,
                 mosaicRule: layerInfo.mosaicRule
             }
-        });
+        }); */
+
+        // const fullUrl = layerInfo.url + '/identify' + '?geometry={x:' + queryLocation.longitude + ',y:' + queryLocation.latitude + ',spatialReference:{wkid:4326}}&returnGeometry=false&returnCatalogItems=true&renderingRule={rasterFunction:None}&geometryType=esriGeometryPoint&f=json&mosaicRule={where:%22tag+=+%27Composite%27%22,ascending:false,multidimensionalDefinition:[{variableName:%22Total+Soil+Moisture+0+to+200cm+(mm)%22}]}';
+
+        const fullUrl = layerInfo.url + '/identify' + '?geometry={x:' + queryLocation.longitude + ',y:' + queryLocation.latitude + ',spatialReference:{wkid:4326}}&returnGeometry=false&returnCatalogItems=true&renderingRule={rasterFunction:None}&geometryType=esriGeometryPoint&f=json&' + layerInfo.mosaicRuleExplicit;
+        console.log('fullUrl',fullUrl);
+
+        return axios.get(fullUrl);
+
+/*        return axios.get(fullUrl, { 
+            params: {
+                mosaicRule: layerInfo.mosaicRule
+            }
+        }); */
+
     });
 
     return new Promise((resolve, reject)=>{

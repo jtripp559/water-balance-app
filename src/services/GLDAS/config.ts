@@ -2,6 +2,7 @@ import { GldasLayerName } from '../../types';
 
 interface GldasLayerInfo {
     url: string;
+    mosaicRuleExplicit: string;
     mosaicRule: {
         where: string;
         ascending: boolean;
@@ -13,18 +14,20 @@ interface GldasLayerInfo {
 
 export const GldasLayersInfo: Record<GldasLayerName, GldasLayerInfo> = {
     "Change in Storage": {
-        // url: "https://utility.arcgis.com/usrsvcs/servers/a26157d5bcc144678aeac6a73549eb85/rest/services/GLDAS_StorageChange/ImageServer",
-        url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_StorageChange/ImageServer",
+        url: "https://utility.arcgis.com/usrsvcs/servers/a26157d5bcc144678aeac6a73549eb85/rest/services/GLDAS_StorageChange/ImageServer",
+        // url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_StorageChange/ImageServer",
+        mosaicRuleExplicit: 'mosaicRule={where:%22tag=%27Composite%27%22,ascending:false}',
         mosaicRule: {
-            where: "tag = 'Composite'",
+            where: "tag='Composite'",
             ascending: false
         }
     },
     "Runoff": {
         url: "https://utility.arcgis.com/usrsvcs/servers/ad5f6cdf01e3448588a293d94ef3bd50/rest/services/GLDAS_Runoff/ImageServer",
         // url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_Runoff/ImageServer",
+        mosaicRuleExplicit: 'mosaicRule={where:%22tag=%27Composite%27%22,ascending:false,multidimensionalDefinition:[{variableName:%22Total+Runoff+(mm)%22}]}',
         mosaicRule: {
-            where: "tag = 'Composite'",
+            where: "tag='Composite'",
             ascending: false,
             multidimensionalDefinition: [
                 {
@@ -36,8 +39,9 @@ export const GldasLayersInfo: Record<GldasLayerName, GldasLayerInfo> = {
     "Soil Moisture": {
         url: "https://utility.arcgis.com/usrsvcs/servers/f520544817274518afa7ce71e7bfa715/rest/services/GLDAS_SoilMoisture/ImageServer",
         // url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_SoilMoisture/ImageServer",
+        mosaicRuleExplicit: 'mosaicRule={where:%22tag=%27Composite%27%22,ascending:false,multidimensionalDefinition:[{variableName:%22Total+Soil+Moisture+0+to+200cm+(mm)%22}]}',
         mosaicRule: {
-            where: "tag = 'Composite'",
+            where: "tag='Composite'",
             ascending: false,
             multidimensionalDefinition: [
                 {
@@ -49,8 +53,9 @@ export const GldasLayersInfo: Record<GldasLayerName, GldasLayerInfo> = {
     "Precipitation": {
         url: "https://utility.arcgis.com/usrsvcs/servers/0b0823aec0e44abc9df288e2e97bd6fa/rest/services/GLDAS_Precipitation/ImageServer",
         // url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_Precipitation/ImageServer",
+        mosaicRuleExplicit: 'mosaicRule={where:%22tag=%27Composite%27%22,ascending:false,multidimensionalDefinition:[{variableName:%22Total+Precipitation+(mm)%22}]}',
         mosaicRule: {
-            where: "tag = 'Composite'",
+            where: "tag='Composite'",
             ascending: false,
             multidimensionalDefinition: [
                 {
@@ -62,16 +67,18 @@ export const GldasLayersInfo: Record<GldasLayerName, GldasLayerInfo> = {
     "Evapotranspiration": {
         url: "https://utility.arcgis.com/usrsvcs/servers/8152741eb29d4cdb8f4661f21b6c2fcd/rest/services/GLDAS_Evapotranspiration/ImageServer",
         // url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_Evapotranspiration/ImageServer",
+        mosaicRuleExplicit: 'mosaicRule={where:%22tag=%27Composite%27%22,ascending:false}',
         mosaicRule: {
-            where: "tag = 'Composite'",
+            where: "tag='Composite'",
             ascending: false
         }
     },
     "Snowpack": {
         url: "https://utility.arcgis.com/usrsvcs/servers/0d6a500cd4cc41bfa5f4eb2d1a7899a1/rest/services/GLDAS_Snowpack/ImageServer",
         // url: "https://earthobs2.arcgis.com/arcgis/rest/services/GLDAS_Snowpack/ImageServer",
+        mosaicRuleExplicit: 'mosaicRule={where:%22tag=%27Composite%27%22,ascending:false}',
         mosaicRule: {
-            where: "tag = 'Composite'",
+            where: "tag='Composite'",
             ascending: false
         }
     }
