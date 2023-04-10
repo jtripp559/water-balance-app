@@ -74,10 +74,11 @@ const ActiveTimeIndicator:React.FC<Props> = ({
     };
 
     const updateVerticalRefLinePos = ():void=>{
-
+        console.log('updateVerticalRefLinePos');
         if(!activeTime){
             return;
         }
+        console.log('activeTime',activeTime);
 
         const { dimension } = svgContainerData;
 
@@ -85,7 +86,9 @@ const ActiveTimeIndicator:React.FC<Props> = ({
 
         const container = select(containerG.current);
 
-        const xPos = xScaleBand(activeTime.getTime()) + xScaleBand.bandwidth() / 2;
+        let thisActiveTime = activeTime.getTime();
+        console.log('thisActiveTime',thisActiveTime);
+        const xPos = xScaleBand(thisActiveTime) + xScaleBand.bandwidth() / 2;
 
         container.select(`.${IndicatorTextClassName}`)
             .text(format(activeTime, UIConfig["active-date-format-pattern"]))
