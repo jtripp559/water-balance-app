@@ -32,5 +32,16 @@ declare namespace JSX {
         'calcite-switch': any;
         'calcite-color-picker': any;
         'calcite-input-text': any;
+        'calcite-shell': any;
+        'calcite-shell-panel': any;
+        'calcite-panel': any;
+        'calcite-card': any;
+        'calcite-text': any;
+        'arcgis-map': any;
+        'arcgis-search': any;
+        'arcgis-zoom': any;
+        'arcgis-home': any;
+        'arcgis-legend': any;
+        'arcgis-layer-list': any;
     }
 }

@@ -154,13 +154,13 @@ const Header:React.FC<Props> = ({
     return (
         <HeaderDiv>
             <div>
-                <span className='avenir-demi font-size--2'>{getTitle()}</span>
+                <span style={{ fontWeight: 'bold', fontSize: '0.75rem' }}>{getTitle()}</span>
             </div>
 
             { getToggleBtns() }
 
             <IntructionText>
-                <span className='font-size--3 narrow-hide'>{ InstructionTextContent }</span>
+                <span style={{ fontSize: '0.875rem' }} className='narrow-hide'>{ InstructionTextContent }</span>
 
                 {/* <Tooltip 
                     title={InstructionTextContent}

@@ -161,38 +161,40 @@ const App:React.FC<Props> = ({
     }, [activeLayer])
 
     return selectedTimeExtentItem ? (
-        <>
+        <calcite-shell>
             <TopNav 
                 infoIconOnClick={setIsInfoModalOpen.bind(this, true)}
             />
 
-            <MapView
-                paddingBottom={ shouldShowBottomPanel? UIConfig["bottom-panel-height"] : 0 }
-                onClickHandler={setQueryLocation}
-            >
-                <GldasLayer 
-                    layerName={activeLayer}
-                    selectedTimeExtentItem={selectedTimeExtentItem}
-                />
+            <div slot="content">
+                <MapView
+                    paddingBottom={ shouldShowBottomPanel? UIConfig["bottom-panel-height"] : 0 }
+                    onClickHandler={setQueryLocation}
+                >
+                    <GldasLayer 
+                        layerName={activeLayer}
+                        selectedTimeExtentItem={selectedTimeExtentItem}
+                    />
 
-                <QueryLocationGraphic 
-                    geometry={queryLocation}
-                />
+                    <QueryLocationGraphic 
+                        geometry={queryLocation}
+                    />
 
-                <SearchWidget
-                    onSelect={setQueryLocation}
-                />
+                    <SearchWidget
+                        onSelect={setQueryLocation}
+                    />
 
-                <LayerSwitcher 
-                    activeLayer={activeLayer}
-                    onChange={setActiveLayer}
-                />
+                    <LayerSwitcher 
+                        activeLayer={activeLayer}
+                        onChange={setActiveLayer}
+                    />
 
-                {/* <Legend /> */}
+                    {/* <Legend /> */}
 
-            </MapView>
-            
-            { getBottomPanel() }
+                </MapView>
+                
+                { getBottomPanel() }
+            </div>
 
             <InfoModal 
                 isOpen={isInfoModalOpen}
@@ -207,7 +209,7 @@ const App:React.FC<Props> = ({
                 isVisible={isFailed}
                 onClose={resetIsFailed}
             />
-        </>
+        </calcite-shell>
     ) : null;
 };
 

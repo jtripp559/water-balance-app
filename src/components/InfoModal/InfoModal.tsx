@@ -23,7 +23,7 @@ const InfoModal:React.FC<Props> = ({
             </div>
             <div slot="content">
                 <div
-                    className='font-size--1'
+                    style={{ fontSize: '0.875rem' }}
                 >
                     <p>This app is based on data from NASA’s <a href='https://ldas.gsfc.nasa.gov/' target="_blank">Global Land Data Assimilation System</a> (GLDAS-2.1), which uses weather observations like temperature, humidity, and rainfall to run the <a href='https://www.jsg.utexas.edu/noah-mp' target="_blank">Noah</a> land surface model. This model estimates how much of the rain becomes runoff, how much evaporates, and how much infiltrates into the soil. These output variables, calculated every three hours, are aggregated into monthly averages, giving us a record of the hydrologic cycle going all the way back to January 2000. </p>
                     <br />

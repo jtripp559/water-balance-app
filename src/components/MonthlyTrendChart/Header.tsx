@@ -36,9 +36,9 @@ const Header:React.FC<Props> = ({
 
     return (
         <HeaderDiv>
-            <div className='font-size--2'>
-                <span className='margin-right-half'>Trend Analyzer for <span className='avenir-demi'>{activeLayer}</span></span>
-            </div>
+            <calcite-text scale="s">
+                <span style={{ marginRight: '0.5rem' }}>Trend Analyzer for <span style={{ fontWeight: 'bold' }}>{activeLayer}</span></span>
+            </calcite-text>
 
             { getMonthName() }
         </HeaderDiv>

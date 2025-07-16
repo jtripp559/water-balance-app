@@ -191,8 +191,8 @@ const Tooltip:React.FC<Props> = ({
             return (
                 <div
                     key={`${key}-${i}`}
-                    className='font-size--2'
                     style={{
+                        fontSize: '0.75rem',
                         color: TextColors[key]
                     }}
                 >
@@ -214,8 +214,10 @@ const Tooltip:React.FC<Props> = ({
                 }}
             >
                 <div
-                    className='padding-trailer-quarter trailer-quarter font-size--2 text-white'
                     style={{
+                        padding: '0.25rem 0',
+                        fontSize: '0.75rem',
+                        color: '#fff',
                         borderBottom: '1px solid rgba(255,255,255,.75)'
                     }}
                 >
