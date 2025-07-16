@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { select, mouse } from 'd3';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer';
+import { Scales, SvgContainerData } from './SvgContainer';
 
 export interface MouseEventItem {
     itemIndex: number;
@@ -14,91 +11,82 @@ export interface MouseEventItem {
 interface Props {
     svgContainerData?: SvgContainerData;
     scales?: Scales;
-    onHover?: (d?:MouseEventItem)=>void;
-};
+    onHover?: (d?: MouseEventItem) => void;
+}
 
-const VerticalRefLineClassName = 'monthly-trend-vertical-ref-line'
+const VerticalRefLineClassName = 'monthly-trend-vertical-ref-line';
 
-const MouseEventsRect:React.FC<Props> = ({
+const MouseEventsRect: React.FC<Props> = ({
     svgContainerData,
     scales,
-    onHover
-})=>{
-
+    onHover,
+}) => {
     const containerG = React.useRef<SVGGElement>();
 
     const itemOnHover = React.useRef<MouseEventItem>();
 
-    const init = ()=>{
-
+    const init = () => {
         const { g, height, width } = svgContainerData;
 
-        containerG.current = select(g)
-            .append('g')
-            .node();
-        
+        containerG.current = select(g).append('g').node();
+
         const container = select(containerG.current);
 
-        container.append('line')
+        container
+            .append('line')
             .attr('class', VerticalRefLineClassName)
             .attr('x1', 0)
             .attr('y1', 0)
             .attr('x2', 0)
             .attr('y2', height)
-            .style("opacity", 0)
+            .style('opacity', 0)
             .attr('stroke-width', 0.5)
-            .attr("stroke", "rgba(0,0,0,.7)")
-            .style("fill", "none");
+            .attr('stroke', 'rgba(0,0,0,.7)')
+            .style('fill', 'none');
 
-        container.append("rect")
-            .attr("width", width)
-            .attr("height", height)
+        container
+            .append('rect')
+            .attr('width', width)
+            .attr('height', height)
             .attr('fill', 'rgba(0,0,0,0)')
-            .on("mouseleave", ()=>{
+            .on('mouseleave', () => {
                 setItemOnHover(undefined);
             })
-            .on("mousemove", function(){
+            .on('mousemove', function () {
                 const mousePosX = mouse(this)[0];
                 getItemByMousePos(mousePosX);
                 setItemOnHover(getItemByMousePos(mousePosX));
             });
     };
 
-    const setItemOnHover = (item:MouseEventItem)=>{
+    const setItemOnHover = (item: MouseEventItem) => {
         itemOnHover.current = item;
         updateVerticalRefLinePos();
         onHover(item);
     };
 
-    const updateVerticalRefLinePos = ()=>{
-
+    const updateVerticalRefLinePos = () => {
         const { x } = scales;
 
         const item = itemOnHover.current;
 
-        const vRefLine = select(containerG.current)
-            .select(`.${VerticalRefLineClassName}`);
+        const vRefLine = select(containerG.current).select(
+            `.${VerticalRefLineClassName}`
+        );
 
-        const xPos = item ? 
-            x(item.value) + x.bandwidth() / 2
-            : 0;
+        const xPos = item ? x(item.value) + x.bandwidth() / 2 : 0;
 
         const opacity = item ? 1 : 0;
 
-        vRefLine
-            .attr('x1', xPos)
-            .attr('x2', xPos)
-            .style('opacity', opacity);
+        vRefLine.attr('x1', xPos).attr('x2', xPos).style('opacity', opacity);
     };
 
-    const getItemByMousePos = (mousePosX:number):MouseEventItem=>{
-
+    const getItemByMousePos = (mousePosX: number): MouseEventItem => {
         let itemIndex = -1;
         const { x } = scales;
         const domain = x.domain();
 
-        for(let i = 0, len = domain.length; i < len; i++){
-
+        for (let i = 0, len = domain.length; i < len; i++) {
             const currItem = domain[i];
             const currItemPos = x(currItem);
 
@@ -106,8 +94,7 @@ const MouseEventsRect:React.FC<Props> = ({
             const nextItem = domain[nextItemIndex];
             const nextItemPos = x(nextItem);
 
-            if(mousePosX >= currItemPos && mousePosX <= nextItemPos){
-
+            if (mousePosX >= currItemPos && mousePosX <= nextItemPos) {
                 const distToCurrItem = Math.abs(mousePosX - currItemPos);
                 const distToNextItem = Math.abs(mousePosX - nextItemPos);
 
@@ -118,21 +105,19 @@ const MouseEventsRect:React.FC<Props> = ({
         }
 
         // console.log(itemIndex)
-        return itemIndex > -1 
+        return itemIndex > -1
             ? {
-                itemIndex,
-                value: domain[itemIndex]
-            }
-            : undefined
+                  itemIndex,
+                  value: domain[itemIndex],
+              }
+            : undefined;
     };
 
-    React.useEffect(()=>{
-
-        if( svgContainerData && scales && !containerG.current){
+    React.useEffect(() => {
+        if (svgContainerData && scales && !containerG.current) {
             init();
         }
-
-    }, [ svgContainerData, scales ]);
+    }, [svgContainerData, scales]);
 
     return null;
 };

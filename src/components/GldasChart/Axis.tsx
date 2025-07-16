@@ -1,28 +1,16 @@
 import './Axis.css';
 import * as React from 'react';
-import { 
-    select,
-    axisBottom,
-    axisLeft
-} from 'd3';
+import { select, axisBottom, axisLeft } from 'd3';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer'
+import { Scales, SvgContainerData } from './SvgContainer';
 
 interface Props {
     svgContainerData?: SvgContainerData;
     scales?: Scales;
-};
+}
 
-const Axis:React.FC<Props> = ({
-    svgContainerData,
-    scales
-})=>{
-
-    const drawXAxis = ()=>{
-
+const Axis: React.FC<Props> = ({ svgContainerData, scales }) => {
+    const drawXAxis = () => {
         const { dimension, g, clipPathId } = svgContainerData;
 
         const { height } = dimension;
@@ -31,9 +19,7 @@ const Axis:React.FC<Props> = ({
 
         const { x } = scales;
 
-        const xAxis = axisBottom(x)
-            .tickSizeInner(-(height))
-            .tickPadding(7)
+        const xAxis = axisBottom(x).tickSizeInner(-height).tickPadding(7);
 
         const xAxisLabel = mainGroup.selectAll('.x.axis');
 
@@ -42,18 +28,16 @@ const Axis:React.FC<Props> = ({
                 .append('g')
                 .attr('class', 'x axis')
                 // .attr("clip-path", `url(#${clipPathId})`)
-                .attr('transform', 'translate(0,' + height  + ')')
+                .attr('transform', 'translate(0,' + height + ')')
                 .call(xAxis);
         } else {
             xAxisLabel
                 .attr('transform', 'translate(0,' + height + ')')
                 .call(xAxis);
         }
-
     };
 
-    const drawYAxis = ()=>{
-
+    const drawYAxis = () => {
         const { g, dimension } = svgContainerData;
 
         const { width } = dimension;
@@ -62,31 +46,23 @@ const Axis:React.FC<Props> = ({
 
         const mainGroup = select(g);
 
-        const yAxis = axisLeft(y)
-            .ticks(9)
-            .tickSizeInner(-(width))
-            .tickPadding(5)
+        const yAxis = axisLeft(y).ticks(9).tickSizeInner(-width).tickPadding(5);
 
         const yAxisLabel = mainGroup.selectAll('.y.axis');
 
         if (!yAxisLabel.size()) {
-            mainGroup
-                .append('g')
-                .attr('class', 'y axis')
-                .call(yAxis);
+            mainGroup.append('g').attr('class', 'y axis').call(yAxis);
         } else {
             yAxisLabel.call(yAxis);
         }
     };
 
-    React.useEffect(()=>{
-
-        if( svgContainerData && scales ){
+    React.useEffect(() => {
+        if (svgContainerData && scales) {
             drawXAxis();
             drawYAxis();
         }
-
-    }, [ svgContainerData, scales ]);
+    }, [svgContainerData, scales]);
 
     return null;
 };

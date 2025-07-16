@@ -1,13 +1,9 @@
 import * as React from 'react';
 import { max, min } from 'd3';
 
-import {
-    GldasIdentifyTaskResults
-} from '../../services/GLDAS/GLDAS';
+import { GldasIdentifyTaskResults } from '../../services/GLDAS/GLDAS';
 
-import {
-    GldasLayerName
-} from '../../types'
+import { GldasLayerName } from '../../types';
 
 import SvgContainer from './SvgContainer';
 import Axis from './Axis';
@@ -19,23 +15,21 @@ import Tooltip from './Tooltip';
 import ActiveTimeIndicator from './ActiveTimeIndicator';
 import Header from './Header';
 
-import {
-    TimeExtentItem
-} from '../App/App';
+import { TimeExtentItem } from '../App/App';
 
 // 'Water Storage': Stacked Area showing Soil Moisture and Snowpack Data
-// 'Water Flux': Bar and Lines shoing precip, evapo and runoff data 
+// 'Water Flux': Bar and Lines shoing precip, evapo and runoff data
 type ChartType = 'Water Storage' | 'Water Flux' | 'Change in Storage';
 
 const ChartTypeLookup: {
-    [key in GldasLayerName ] : ChartType
+    [key in GldasLayerName]: ChartType;
 } = {
     'Soil Moisture': 'Water Storage',
-    'Snowpack': 'Water Storage',
-    'Precipitation': 'Water Flux',
-    'Evapotranspiration': 'Water Flux',
-    'Runoff': 'Water Flux',
-    'Change in Storage': 'Change in Storage'
+    Snowpack: 'Water Storage',
+    Precipitation: 'Water Flux',
+    Evapotranspiration: 'Water Flux',
+    Runoff: 'Water Flux',
+    'Change in Storage': 'Change in Storage',
 };
 
 // const GldasChartContainerDiv = styled.div`
@@ -54,11 +48,11 @@ interface Props {
     selectedTimeExtentItem: TimeExtentItem;
     previewTimeExtentItem: TimeExtentItem;
 
-    selectedItemOnChange: (d:TimeExtentItem)=>void;
-    previewItemOnChange: (d:TimeExtentItem)=>void;
+    selectedItemOnChange: (d: TimeExtentItem) => void;
+    previewItemOnChange: (d: TimeExtentItem) => void;
 }
 
-const GldasChartContainer:React.FC<Props> = ({
+const GldasChartContainer: React.FC<Props> = ({
     data,
     timeExtent,
     activeLayer,
@@ -67,70 +61,69 @@ const GldasChartContainer:React.FC<Props> = ({
     previewTimeExtentItem,
 
     selectedItemOnChange,
-    previewItemOnChange
-})=>{
-
-    const getYDomain = ()=>{
-
-        if(!data){
+    previewItemOnChange,
+}) => {
+    const getYDomain = () => {
+        if (!data) {
             return [0, 0];
         }
 
         const chartType = ChartTypeLookup[activeLayer];
 
-        if( chartType === 'Water Storage' ){
+        if (chartType === 'Water Storage') {
+            const maxSoilMoisture = max(
+                data['Soil Moisture'].map((d) => d.value)
+            );
+            const maxSnowpack = max(data.Snowpack.map((d) => d.value));
 
-            const maxSoilMoisture = max(data["Soil Moisture"].map(d=>d.value));
-            const maxSnowpack = max(data.Snowpack.map(d=>d.value));
-
-            return [ 0, maxSoilMoisture + maxSnowpack ];
+            return [0, maxSoilMoisture + maxSnowpack];
         }
 
-        if( chartType === 'Change in Storage' ){
-
-            const allValues = data["Change in Storage"].map(d=>d.value);
+        if (chartType === 'Change in Storage') {
+            const allValues = data['Change in Storage'].map((d) => d.value);
             const minVal = min(allValues);
             const maxVal = max(allValues);
 
-            return [ minVal, maxVal ];
+            return [minVal, maxVal];
         }
 
-        const maxPrecip = max(data.Precipitation.map(d=>d.value));
-        const maxEvapo = max(data.Evapotranspiration.map(d=>d.value));
-        const maxRunoff  = max(data.Runoff.map(d=>d.value));
+        const maxPrecip = max(data.Precipitation.map((d) => d.value));
+        const maxEvapo = max(data.Evapotranspiration.map((d) => d.value));
+        const maxRunoff = max(data.Runoff.map((d) => d.value));
 
         return [0, max([maxPrecip, maxEvapo, maxRunoff])];
     };
 
-    const getDataForStackedArea = ()=>{
-
-        return data && ChartTypeLookup[activeLayer] === 'Water Storage' 
+    const getDataForStackedArea = () => {
+        return data && ChartTypeLookup[activeLayer] === 'Water Storage'
             ? {
-                'Soil Moisture': data["Soil Moisture"],
-                'Snowpack': data['Snowpack']
-            }
+                  'Soil Moisture': data['Soil Moisture'],
+                  Snowpack: data['Snowpack'],
+              }
             : null;
     };
 
-    const getDataForBar= ()=>{
-
-        if(!data || (ChartTypeLookup[activeLayer] !== 'Water Flux' && ChartTypeLookup[activeLayer] !== 'Change in Storage') ){
+    const getDataForBar = () => {
+        if (
+            !data ||
+            (ChartTypeLookup[activeLayer] !== 'Water Flux' &&
+                ChartTypeLookup[activeLayer] !== 'Change in Storage')
+        ) {
             return null;
         }
 
-        return ChartTypeLookup[activeLayer] === 'Change in Storage' 
-            ? data["Change in Storage"] 
+        return ChartTypeLookup[activeLayer] === 'Change in Storage'
+            ? data['Change in Storage']
             : data.Precipitation;
     };
 
-    const getDataForLines= ()=>{
-
-        if(!data || ChartTypeLookup[activeLayer] !== 'Water Flux' ){
+    const getDataForLines = () => {
+        if (!data || ChartTypeLookup[activeLayer] !== 'Water Flux') {
             return null;
         }
 
-        return ( activeLayer === 'Precipitation' || activeLayer === 'Runoff')
-            ? data.Runoff 
+        return activeLayer === 'Precipitation' || activeLayer === 'Runoff'
+            ? data.Runoff
             : data.Evapotranspiration;
     };
 
@@ -141,56 +134,41 @@ const GldasChartContainer:React.FC<Props> = ({
                 flexGrow: 1,
                 flexShrink: 1,
                 flex: 'auto',
-                height: '100%'
+                height: '100%',
             }}
         >
+            <Header activeLayer={activeLayer} />
 
-            <Header 
-                activeLayer={activeLayer}
-            />
+            <SvgContainer timeExtent={timeExtent} yDomain={getYDomain()}>
+                <StackedArea data={getDataForStackedArea()} />
 
-            <SvgContainer
-                timeExtent={timeExtent}
-                yDomain={getYDomain()}
-            >
-                
-                <StackedArea 
-                    data={getDataForStackedArea()}
-                />
-
-                <Bar 
+                <Bar
                     data={getDataForBar()}
                     isDiverging={activeLayer === 'Change in Storage'}
                 />
 
-                <Line 
-                    data={getDataForLines()}
-                />
+                <Line data={getDataForLines()} />
 
                 <Axis />
 
-                <ActiveTimeIndicator 
-                    activeTime={selectedTimeExtentItem.date}
-                />
+                <ActiveTimeIndicator activeTime={selectedTimeExtentItem.date} />
 
-                <MouseEventsRect 
+                <MouseEventsRect
                     timeExtent={timeExtent}
-                    onHover={(d)=>{
+                    onHover={(d) => {
                         previewItemOnChange(d);
                     }}
-                    onClick={(d)=>{
+                    onClick={(d) => {
                         selectedItemOnChange(d);
                     }}
                 />
 
-                <Tooltip 
+                <Tooltip
                     data={data}
                     activeLayer={activeLayer}
                     itemOnHover={previewTimeExtentItem}
                 />
-
             </SvgContainer>
-
         </div>
     );
 };

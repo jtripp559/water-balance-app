@@ -1,22 +1,13 @@
 import * as React from 'react';
-import { select, curveCardinal, line  } from 'd3';
+import { select, curveCardinal, line } from 'd3';
 
-import {
-    GldasLayerName
-} from '../../types';
+import { GldasLayerName } from '../../types';
 
-import {
-    GldasIdentifyTaskResultItem,
-} from '../../services/GLDAS/GLDAS';
+import { GldasIdentifyTaskResultItem } from '../../services/GLDAS/GLDAS';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer';
+import { Scales, SvgContainerData } from './SvgContainer';
 
-import {
-    UIConfig
-} from '../../AppConfig';
+import { UIConfig } from '../../AppConfig';
 
 interface Props {
     data?: GldasIdentifyTaskResultItem[][];
@@ -24,98 +15,96 @@ interface Props {
     index4SelectedMonth: number;
     svgContainerData?: SvgContainerData;
     scales?: Scales;
-};
+}
 
 const LineGroupClassName = 'monthly-trend-line-group';
 const LinePathClassName = 'monthly-trend-line';
 
 const ColorLookup: Record<GldasLayerName, string> = {
-    'Precipitation': UIConfig["precipitation-color"],
-    'Runoff': UIConfig["water-flux-line-color"],
-    'Evapotranspiration': UIConfig["water-flux-line-color"],
-    'Soil Moisture': UIConfig["soil-moisture-color"],
-    'Snowpack': UIConfig["snowpack-color"],
+    Precipitation: UIConfig['precipitation-color'],
+    Runoff: UIConfig['water-flux-line-color'],
+    Evapotranspiration: UIConfig['water-flux-line-color'],
+    'Soil Moisture': UIConfig['soil-moisture-color'],
+    Snowpack: UIConfig['snowpack-color'],
     'Change in Storage': '#333333',
 };
 
-const Line:React.FC<Props> = ({
+const Line: React.FC<Props> = ({
     data,
     activeLayer,
     index4SelectedMonth,
     svgContainerData,
-    scales
-})=>{
-
+    scales,
+}) => {
     const containerG = React.useRef<SVGGElement>();
 
-    const initContainer = ()=>{
+    const initContainer = () => {
         const { g } = svgContainerData;
 
-        containerG.current = select(g)
-            .append('g')
-            .node();
+        containerG.current = select(g).append('g').node();
     };
 
-    const draw = ()=>{
-
+    const draw = () => {
         const containerGroup = select(containerG.current);
 
         const { x, y } = scales;
 
         const valueline = line<GldasIdentifyTaskResultItem>()
             .curve(curveCardinal)
-            .x(d=>x(d.date.getFullYear()) + x.bandwidth() / 2)
-            .y(d=>y(d.value));
+            .x((d) => x(d.date.getFullYear()) + x.bandwidth() / 2)
+            .y((d) => y(d.value));
 
         remove();
 
-        containerGroup.append('g')
+        containerGroup
+            .append('g')
             .attr('class', LineGroupClassName)
-            .selectAll("path")
+            .selectAll('path')
             .data(data)
-            .join("path")
+            .join('path')
             .attr('class', LinePathClassName)
-            .attr("d", d => {
-                return valueline(d)
+            .attr('d', (d) => {
+                return valueline(d);
             })
             .style('fill', 'none')
-            .style('stroke', (d)=>{
+            .style('stroke', (d) => {
                 return ColorLookup[activeLayer];
             })
-            .style('stroke-width', (d, index:number)=>{
-                return index === index4SelectedMonth ? 2 : .5;
+            .style('stroke-width', (d, index: number) => {
+                return index === index4SelectedMonth ? 2 : 0.5;
             })
-            .style('opacity', (d, index:number)=>{
-                return index === index4SelectedMonth ? 1 : .3;
+            .style('opacity', (d, index: number) => {
+                return index === index4SelectedMonth ? 1 : 0.3;
             });
     };
 
-    const remove = ()=>{
+    const remove = () => {
+        const lineGroup = select(containerG.current).selectAll(
+            `.${LineGroupClassName}`
+        );
 
-        const lineGroup = select(containerG.current).selectAll(`.${LineGroupClassName}`);
-        
-        if(lineGroup.size()){
+        if (lineGroup.size()) {
             lineGroup.remove().exit();
         }
     };
 
-    React.useEffect(()=>{
-        if( svgContainerData){
+    React.useEffect(() => {
+        if (svgContainerData) {
             initContainer();
         }
-    }, [ svgContainerData ]);
+    }, [svgContainerData]);
 
-    React.useEffect(()=>{
-        if( svgContainerData && scales && data ){
+    React.useEffect(() => {
+        if (svgContainerData && scales && data) {
             draw();
         }
-    }, [ scales ]);
+    }, [scales]);
 
-    React.useEffect(()=>{
-        if( svgContainerData && scales ){
+    React.useEffect(() => {
+        if (svgContainerData && scales) {
             data ? draw() : remove();
         }
-    }, [ data ]);
+    }, [data]);
 
     return null;
 };

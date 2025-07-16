@@ -1,49 +1,30 @@
 import * as React from 'react';
-import { 
-    select,
-    line,
-    curveMonotoneX
-} from 'd3';
+import { select, line, curveMonotoneX } from 'd3';
 
-import {
-    GldasIdentifyTaskResultItem
-} from '../../services/GLDAS/GLDAS';
+import { GldasIdentifyTaskResultItem } from '../../services/GLDAS/GLDAS';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer';
+import { Scales, SvgContainerData } from './SvgContainer';
 
-import {
-    UIConfig
-} from '../../AppConfig';
+import { UIConfig } from '../../AppConfig';
 
 interface Props {
     data?: GldasIdentifyTaskResultItem[];
     svgContainerData?: SvgContainerData;
     scales?: Scales;
-};
+}
 
 const LinePathClassName = 'water-flux-line';
 
-const Line:React.FC<Props> = ({
-    data,
-    svgContainerData,
-    scales
-})=>{
-
+const Line: React.FC<Props> = ({ data, svgContainerData, scales }) => {
     const containerG = React.useRef<SVGGElement>();
 
-    const initContainer = ()=>{
+    const initContainer = () => {
         const { g } = svgContainerData;
 
-        containerG.current = select(g)
-            .append('g')
-            .node();
+        containerG.current = select(g).append('g').node();
     };
 
-    const draw = ()=>{
-
+    const draw = () => {
         const { clipPathId } = svgContainerData;
 
         const containerGroup = select(containerG.current);
@@ -54,58 +35,61 @@ const Line:React.FC<Props> = ({
 
         const valueline = line<GldasIdentifyTaskResultItem>()
             .curve(curveMonotoneX)
-            .x(d=>x(d.date) - xOffset)
-            .y(d=>y(d.value));
+            .x((d) => x(d.date) - xOffset)
+            .y((d) => y(d.value));
 
         remove();
 
-        containerGroup.append("path")
+        containerGroup
+            .append('path')
             .data([data])
-            .attr("class", LinePathClassName)
-            .attr("clip-path", `url(#${clipPathId})`)
-            .attr("d", valueline)
+            .attr('class', LinePathClassName)
+            .attr('clip-path', `url(#${clipPathId})`)
+            .attr('d', valueline)
             .style('fill', 'none')
             .style('stroke', '#fff')
             .style('stroke-width', 4)
-            .style('opacity', .8)
+            .style('opacity', 0.8);
 
-        containerGroup.append("path")
+        containerGroup
+            .append('path')
             .data([data])
-            .attr("class", LinePathClassName)
-            .attr("clip-path", `url(#${clipPathId})`)
-            .attr("d", valueline)
+            .attr('class', LinePathClassName)
+            .attr('clip-path', `url(#${clipPathId})`)
+            .attr('d', valueline)
             .style('fill', 'none')
-            .style('stroke', UIConfig["water-flux-line-color"])
+            .style('stroke', UIConfig['water-flux-line-color'])
             .style('stroke-width', 2);
     };
 
-    const remove = ()=>{
+    const remove = () => {
+        const lines = select(containerG.current).selectAll(
+            `.${LinePathClassName}`
+        );
 
-        const lines = select(containerG.current).selectAll(`.${LinePathClassName}`);
-        
         // check the number of existing lines, if greater than 0; remove all existing ones
-        if(lines.size()){
+        if (lines.size()) {
             lines.remove().exit();
         }
     };
 
-    React.useEffect(()=>{
-        if( svgContainerData){
+    React.useEffect(() => {
+        if (svgContainerData) {
             initContainer();
         }
-    }, [ svgContainerData ]);
+    }, [svgContainerData]);
 
-    React.useEffect(()=>{
-        if( svgContainerData && scales && data ){
+    React.useEffect(() => {
+        if (svgContainerData && scales && data) {
             draw();
         }
-    }, [ scales ]);
+    }, [scales]);
 
-    React.useEffect(()=>{
-        if( svgContainerData && scales ){
+    React.useEffect(() => {
+        if (svgContainerData && scales) {
             data ? draw() : remove();
         }
-    }, [ data ]);
+    }, [data]);
 
     return null;
 };

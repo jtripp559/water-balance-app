@@ -1,20 +1,13 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer';
+import { Scales, SvgContainerData } from './SvgContainer';
 
 import { HeaderHeight } from './Header';
 
-import {
-    GldasIdentifyTaskResultItem
-} from '../../services/GLDAS/GLDAS';
+import { GldasIdentifyTaskResultItem } from '../../services/GLDAS/GLDAS';
 
-import {
-    UIConfig
-} from '../../AppConfig';
+import { UIConfig } from '../../AppConfig';
 
 import { MouseEventItem } from './MouseEventsRect';
 
@@ -29,51 +22,52 @@ interface Props {
     itemOnHover: MouseEventItem;
     data: GldasIdentifyTaskResultItem[][];
     selectedDate: Date;
-};
+}
 
-const Tooltip:React.FC<Props> = ({
+const Tooltip: React.FC<Props> = ({
     svgContainerData,
     scales,
     itemOnHover,
     data,
-    selectedDate
-})=>{
-
+    selectedDate,
+}) => {
     const tooltipRef = React.useRef<HTMLDivElement>();
 
-    const [ tooltipPos, setTooltipPos ] = React.useState<TooltipPos>({ top: 0, left: 0})
+    const [tooltipPos, setTooltipPos] = React.useState<TooltipPos>({
+        top: 0,
+        left: 0,
+    });
 
-    const updateTooltipPosition = ()=>{
-
+    const updateTooltipPosition = () => {
         const tooltipDiv = tooltipRef.current;
 
-        if(!tooltipDiv){
+        if (!tooltipDiv) {
             return;
-        };
+        }
 
         const { width, margin } = svgContainerData;
         const { x } = scales;
-        
+
         const tooltipDivWidth = tooltipDiv.offsetWidth;
         const tooltipDivHeight = tooltipDiv.offsetHeight;
 
         const top = -(tooltipDivHeight - margin.top - HeaderHeight);
-        const xPosForItemOnHover = x(itemOnHover.value) + x.bandwidth() / 2 + margin.left;
+        const xPosForItemOnHover =
+            x(itemOnHover.value) + x.bandwidth() / 2 + margin.left;
 
-        const left = ( xPosForItemOnHover + tooltipDivWidth ) >= (width + margin.left) 
-            ? (xPosForItemOnHover - tooltipDivWidth) 
-            : xPosForItemOnHover;
+        const left =
+            xPosForItemOnHover + tooltipDivWidth >= width + margin.left
+                ? xPosForItemOnHover - tooltipDivWidth
+                : xPosForItemOnHover;
 
         setTooltipPos({
             top,
-            left
+            left,
         });
     };
 
-
-    const getTooltip = ():JSX.Element=>{
-
-        if(!itemOnHover){
+    const getTooltip = (): JSX.Element => {
+        if (!itemOnHover) {
             return null;
         }
 
@@ -85,25 +79,25 @@ const Tooltip:React.FC<Props> = ({
         return data[monthIndex][itemIndex] ? (
             <div
                 ref={tooltipRef}
-                className='font-size--3'
+                className="font-size--3"
                 style={{
                     position: 'absolute',
                     left: `${left}px`,
                     top: `${top}px`,
                     padding: '.15rem .35rem',
                     background: 'rgba(0,0,0,.7)',
-                    color: '#fff'
+                    color: '#fff',
                 }}
             >
-                <span>{ dateLabel }: </span>
-                <span>{ data[monthIndex][itemIndex].value } mm </span>
+                <span>{dateLabel}: </span>
+                <span>{data[monthIndex][itemIndex].value} mm </span>
             </div>
-        ) : null
-    }
+        ) : null;
+    };
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         updateTooltipPosition();
-    }, [ itemOnHover ])
+    }, [itemOnHover]);
 
     return itemOnHover ? getTooltip() : null;
 };

@@ -4,24 +4,20 @@ import { UIConfig } from '../../AppConfig';
 
 interface Props {
     isVisible?: boolean;
-    onClose: ()=>void;
+    onClose: () => void;
 }
 
-const ErrorAlert:React.FC<Props> = ({
-    isVisible,
-    onClose
-})=>{
-
-    if(!isVisible){
-        return null
+const ErrorAlert: React.FC<Props> = ({ isVisible, onClose }) => {
+    if (!isVisible) {
+        return null;
     }
 
     return isVisible ? (
         <div
             style={{
-                'position': 'absolute',
-                'bottom': '1.5rem',
-                'right': '1rem'
+                position: 'absolute',
+                bottom: '1.5rem',
+                right: '1rem',
             }}
         >
             {/* <Alert red showIcon showCloseLabel onClose={onClose}>
@@ -30,7 +26,10 @@ const ErrorAlert:React.FC<Props> = ({
             </Alert> */}
 
             <calcite-alert open label="A report alert" kind="danger">
-                <div slot="message">Failed to fetch GLDAS data for the selected location. Use a different location and try again.</div>
+                <div slot="message">
+                    Failed to fetch GLDAS data for the selected location. Use a
+                    different location and try again.
+                </div>
             </calcite-alert>
         </div>
     ) : null;

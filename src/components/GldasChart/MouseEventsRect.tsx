@@ -1,120 +1,105 @@
 import * as React from 'react';
-import { 
-    select,
-    mouse
-} from 'd3';
+import { select, mouse } from 'd3';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer';
+import { Scales, SvgContainerData } from './SvgContainer';
 
-import {
-    TimeExtentItem
-} from '../App/App';
+import { TimeExtentItem } from '../App/App';
 
 interface Props {
     timeExtent: Date[];
     svgContainerData?: SvgContainerData;
     scales?: Scales;
 
-    onClick?: (d?:TimeExtentItem)=>void;
-    onHover?: (d?:TimeExtentItem)=>void;
-};
+    onClick?: (d?: TimeExtentItem) => void;
+    onHover?: (d?: TimeExtentItem) => void;
+}
 
-const VerticalRefLineClassName = 'vertical-ref-line'
+const VerticalRefLineClassName = 'vertical-ref-line';
 
-const MouseEventsRect:React.FC<Props> = ({
+const MouseEventsRect: React.FC<Props> = ({
     timeExtent,
     svgContainerData,
     scales,
 
     onClick,
-    onHover
-})=>{
-
+    onHover,
+}) => {
     const containerG = React.useRef<SVGGElement>();
 
     const itemOnHover = React.useRef<TimeExtentItem>();
 
-    const init = ()=>{
-
+    const init = () => {
         const { g, dimension } = svgContainerData;
 
         const { height, width } = dimension;
 
-        containerG.current = select(g)
-            .append('g')
-            .node();
-        
+        containerG.current = select(g).append('g').node();
+
         const container = select(containerG.current);
 
-        container.append('line')
+        container
+            .append('line')
             .attr('class', VerticalRefLineClassName)
             .attr('x1', 0)
             .attr('y1', 0)
             .attr('x2', 0)
             .attr('y2', height)
-            .style("opacity", 0)
+            .style('opacity', 0)
             .attr('stroke-width', 0.5)
-            .attr("stroke", "#fff")
-            .style("fill", "none");
+            .attr('stroke', '#fff')
+            .style('fill', 'none');
 
-        container.append("rect")
+        container
+            .append('rect')
             // .attr("class", ClassNames.BackgroundRect)
-            .attr("width", width)
-            .attr("height", height)
+            .attr('width', width)
+            .attr('height', height)
             .attr('fill', 'rgba(0,0,0,0)')
-            .on("click", ()=>{
-                setItemOnClick(itemOnHover.current)
+            .on('click', () => {
+                setItemOnClick(itemOnHover.current);
             })
-            .on("mouseleave", ()=>{
+            .on('mouseleave', () => {
                 setItemOnHover(null);
             })
-            .on("mousemove", function(){
+            .on('mousemove', function () {
                 const mousePosX = mouse(this)[0];
                 setItemOnHover(getItemByMousePos(mousePosX));
             });
     };
 
-    const setItemOnHover = (item?:TimeExtentItem)=>{
+    const setItemOnHover = (item?: TimeExtentItem) => {
         itemOnHover.current = item;
         updateVerticalRefLinePos();
         onHover(item);
     };
 
-    const setItemOnClick = (item?:TimeExtentItem)=>{
+    const setItemOnClick = (item?: TimeExtentItem) => {
         onClick(item);
-    }
+    };
 
-    const updateVerticalRefLinePos = ():void=>{
-
+    const updateVerticalRefLinePos = (): void => {
         const { xScaleBand } = scales;
 
         const item = itemOnHover.current;
 
-        const vRefLine = select(containerG.current)
-            .select(`.${VerticalRefLineClassName}`);
+        const vRefLine = select(containerG.current).select(
+            `.${VerticalRefLineClassName}`
+        );
 
-        const xPos = item ? 
-            xScaleBand(item.date.getTime()) +  xScaleBand.bandwidth() / 2
+        const xPos = item
+            ? xScaleBand(item.date.getTime()) + xScaleBand.bandwidth() / 2
             : 0;
 
         const opacity = item ? 1 : 0;
 
-        vRefLine
-            .attr('x1', xPos)
-            .attr('x2', xPos)
-            .style('opacity', opacity);
+        vRefLine.attr('x1', xPos).attr('x2', xPos).style('opacity', opacity);
     };
 
-    const getItemByMousePos = (mousePosX:number):TimeExtentItem=>{
-
+    const getItemByMousePos = (mousePosX: number): TimeExtentItem => {
         let itemIndex = -1;
         const { x } = scales;
 
-        for(let i = 0, len = timeExtent.length; i < len; i++){
-
+        for (let i = 0, len = timeExtent.length; i < len; i++) {
             const currItem = timeExtent[i];
             const currItemPos = x(currItem);
 
@@ -122,8 +107,7 @@ const MouseEventsRect:React.FC<Props> = ({
             const nextItem = timeExtent[nextItemIndex];
             const nextItemPos = x(nextItem);
 
-            if(mousePosX >= currItemPos && mousePosX <= nextItemPos){
-
+            if (mousePosX >= currItemPos && mousePosX <= nextItemPos) {
                 const distToCurrItem = Math.abs(mousePosX - currItemPos);
                 const distToNextItem = Math.abs(mousePosX - nextItemPos);
 
@@ -135,31 +119,24 @@ const MouseEventsRect:React.FC<Props> = ({
 
         return {
             date: timeExtent[itemIndex],
-            index: itemIndex
+            index: itemIndex,
         };
     };
 
-    React.useEffect(()=>{
-
-        if( svgContainerData && timeExtent.length ){
+    React.useEffect(() => {
+        if (svgContainerData && timeExtent.length) {
             init();
         }
+    }, [svgContainerData, timeExtent]);
 
-    }, [ svgContainerData, timeExtent ]);
-
-    React.useEffect(()=>{
-
-        if( svgContainerData && scales ){
-
+    React.useEffect(() => {
+        if (svgContainerData && scales) {
             const { dimension } = svgContainerData;
             const { width } = dimension;
 
-            select(containerG.current)
-                .select('rect')
-                .attr('width', width);
+            select(containerG.current).select('rect').attr('width', width);
         }
-
-    }, [ scales ]);
+    }, [scales]);
 
     return null;
 };
