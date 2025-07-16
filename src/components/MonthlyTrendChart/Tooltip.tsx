@@ -85,8 +85,8 @@ const Tooltip:React.FC<Props> = ({
         return data[monthIndex][itemIndex] ? (
             <div
                 ref={tooltipRef}
-                className='font-size--3'
                 style={{
+                    fontSize: '0.875rem',
                     position: 'absolute',
                     left: `${left}px`,
                     top: `${top}px`,
