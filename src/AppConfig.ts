@@ -1,5 +1,5 @@
 export const MapConfig = {
-    "web-map-id": "fccbb69d8644430894d3cefc50102dd9"
+    'web-map-id': 'fccbb69d8644430894d3cefc50102dd9',
     // // webmap with blend mode on it made by Sean
     // "web-map-id": "4b9cced10ff1401ba15bf6f14c8232bc"
 };
@@ -22,5 +22,5 @@ export const UIConfig = {
     'change-in-storage-negative': 'rgba(127, 39, 4, .8)',
 
     'query-location-fill-color': 'rgba(207, 34, 171, 0.8)',
-    'query-location-outline-color': 'rgba(255, 255, 255, 0.7)'
+    'query-location-outline-color': 'rgba(255, 255, 255, 0.7)',
 };

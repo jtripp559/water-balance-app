@@ -5,46 +5,41 @@ import IPoint from '@arcgis/core/geometry/Point';
 import {
     getGLDASdata,
     GldasIdentifyTaskResults,
-    GldasIdentifyTaskResultsByMonth
+    GldasIdentifyTaskResultsByMonth,
 } from '../services/GLDAS/GLDAS';
 
 interface FetchResponse {
     gldasData: GldasIdentifyTaskResults;
-    gldasDataByMonth: GldasIdentifyTaskResultsByMonth,
+    gldasDataByMonth: GldasIdentifyTaskResultsByMonth;
 }
 
 interface useGldasDataResponse {
     gldasDataResponse: FetchResponse;
     isLoading: boolean;
     isFailed: boolean;
-    resetIsFailed: ()=>void;
+    resetIsFailed: () => void;
 }
 
-const useGldasData = (queryLocation:IPoint): useGldasDataResponse=>{
+const useGldasData = (queryLocation: IPoint): useGldasDataResponse => {
+    const [gldasDataResponse, setResponse] = React.useState<FetchResponse>();
 
-    const [ gldasDataResponse, setResponse ] = React.useState<FetchResponse>();
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-    const [ isLoading, setIsLoading ] = React.useState<boolean>(false);
+    const [isFailed, setIsFaied] = React.useState<boolean>(false);
 
-    const [ isFailed, setIsFaied ] = React.useState<boolean>(false);
-
-    const fetch = async()=>{
-
+    const fetch = async () => {
         setIsLoading(true);
         setIsFaied(false);
 
         try {
-            const {
-                identifyResults,
-                identifyResultsByMonth
-            } = await getGLDASdata(queryLocation);
-    
+            const { identifyResults, identifyResultsByMonth } =
+                await getGLDASdata(queryLocation);
+
             setResponse({
                 gldasData: identifyResults,
-                gldasDataByMonth: identifyResultsByMonth
+                gldasDataByMonth: identifyResultsByMonth,
             });
-
-        } catch(err){
+        } catch (err) {
             // console.log(err);
             setIsFaied(true);
             setResponse(null);
@@ -53,22 +48,22 @@ const useGldasData = (queryLocation:IPoint): useGldasDataResponse=>{
         setIsLoading(false);
     };
 
-    const resetIsFailed = ()=>{
+    const resetIsFailed = () => {
         setIsFaied(false);
     };
 
-    React.useEffect(()=>{
-        if(queryLocation){
+    React.useEffect(() => {
+        if (queryLocation) {
             fetch();
         }
-    }, [queryLocation])
+    }, [queryLocation]);
 
     return {
         gldasDataResponse,
         isLoading,
         isFailed,
-        resetIsFailed
-    }
+        resetIsFailed,
+    };
 };
 
 export default useGldasData;

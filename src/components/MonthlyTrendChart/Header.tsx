@@ -16,33 +16,29 @@ const HeaderDiv = styled.div`
 interface Props {
     activeLayer: GldasLayerName;
     timeExtentItem: TimeExtentItem;
-};
+}
 
-
-const Header:React.FC<Props> = ({
-    activeLayer,
-    timeExtentItem
-})=>{
-
-    const getMonthName = ()=>{
-        if(!timeExtentItem){
+const Header: React.FC<Props> = ({ activeLayer, timeExtentItem }) => {
+    const getMonthName = () => {
+        if (!timeExtentItem) {
             return null;
         }
 
-        return (
-            <div>{format(timeExtentItem.date, 'MMMM')}</div>
-        );
-    }
+        return <div>{format(timeExtentItem.date, 'MMMM')}</div>;
+    };
 
     return (
         <HeaderDiv>
-            <div className='font-size--2'>
-                <span className='margin-right-half'>Trend Analyzer for <span className='avenir-demi'>{activeLayer}</span></span>
+            <div className="font-size--2">
+                <span className="margin-right-half">
+                    Trend Analyzer for{' '}
+                    <span className="avenir-demi">{activeLayer}</span>
+                </span>
             </div>
 
-            { getMonthName() }
+            {getMonthName()}
         </HeaderDiv>
-    )
+    );
 };
 
 export default Header;

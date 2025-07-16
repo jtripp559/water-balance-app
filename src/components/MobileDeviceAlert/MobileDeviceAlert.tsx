@@ -5,15 +5,12 @@ interface Props {
     isVisible?: boolean;
 }
 
-const MobileDeviceAlert:React.FC<Props> = ({
-    isVisible
-})=>{
-
+const MobileDeviceAlert: React.FC<Props> = ({ isVisible }) => {
     return isVisible ? (
         <div
             style={{
                 // 'position': 'absolute',
-                'bottom': 0
+                bottom: 0,
             }}
         >
             {/* <Alert yellow showIcon>
@@ -21,7 +18,10 @@ const MobileDeviceAlert:React.FC<Props> = ({
             </Alert> */}
 
             <calcite-alert open label="A report alert" kind="info">
-                <div slot="message">Run this app on your devices with wider screen to see the interactive components</div>
+                <div slot="message">
+                    Run this app on your devices with wider screen to see the
+                    interactive components
+                </div>
             </calcite-alert>
         </div>
     ) : null;

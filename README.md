@@ -37,7 +37,7 @@ npm run build
 
 ## Requirements
 
-- [ArcGIS API for JavaScript (version 4.15)](https://developers.arcgis.com/javascript/index.html)
+- [ArcGIS Maps SDK for JavaScript (version 4.33.9)](https://developers.arcgis.com/javascript/index.html)
 - [D3.js (version 5)](https://d3js.org/)
 
 ## Resources

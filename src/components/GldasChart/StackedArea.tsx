@@ -1,18 +1,9 @@
 import * as React from 'react';
-import { 
-    select,
-    stack,
-    area as d3Area
-} from 'd3';
+import { select, stack, area as d3Area } from 'd3';
 
-import {
-    GldasIdentifyTaskResultItem
-} from '../../services/GLDAS/GLDAS';
+import { GldasIdentifyTaskResultItem } from '../../services/GLDAS/GLDAS';
 
-import {
-    Scales,
-    SvgContainerData
-} from './SvgContainer';
+import { Scales, SvgContainerData } from './SvgContainer';
 
 import { UIConfig } from '../../AppConfig';
 
@@ -21,111 +12,105 @@ const AreaPathClassName = 'water-storage-path-group';
 interface Props {
     data?: {
         'Soil Moisture': GldasIdentifyTaskResultItem[];
-        'Snowpack': GldasIdentifyTaskResultItem[];
+        Snowpack: GldasIdentifyTaskResultItem[];
     };
     svgContainerData?: SvgContainerData;
     scales?: Scales;
-};
+}
 
 interface CombinedData {
     date: Date;
     'Soil Moisture': number;
-    'Snowpack': number;
+    Snowpack: number;
 }
 
-const StackedArea:React.FC<Props> = ({
-    data,
-    svgContainerData,
-    scales
-})=>{
-
+const StackedArea: React.FC<Props> = ({ data, svgContainerData, scales }) => {
     const containerG = React.useRef<SVGGElement>();
 
-    const initContainer = ()=>{
+    const initContainer = () => {
         const { g } = svgContainerData;
 
-        containerG.current = select(g)
-            .append('g')
-            .node();
+        containerG.current = select(g).append('g').node();
     };
 
-    const draw = ()=>{
-
+    const draw = () => {
         const { clipPathId } = svgContainerData;
 
         const { x, y } = scales;
 
-        const combinedData:CombinedData[] = data["Soil Moisture"].map((d, i)=>{
+        const combinedData: CombinedData[] = data['Soil Moisture'].map(
+            (d, i) => {
+                const soilMoisture = d.value;
+                const date = d.date;
+                const snowpack = data.Snowpack[i].value;
 
-            const soilMoisture = d.value;
-            const date = d.date;
-            const snowpack = data.Snowpack[i].value;
-
-            return {
-                date,
-                'Soil Moisture': soilMoisture,
-                'Snowpack': snowpack
+                return {
+                    date,
+                    'Soil Moisture': soilMoisture,
+                    Snowpack: snowpack,
+                };
             }
-        });
+        );
 
-        const series = stack<CombinedData>()
-            .keys([ 'Soil Moisture', 'Snowpack' ])(combinedData);
+        const series = stack<CombinedData>().keys([
+            'Soil Moisture',
+            'Snowpack',
+        ])(combinedData);
         // console.log(series)
 
         const area = d3Area<{
             0: number;
             1: number;
-            data: CombinedData
+            data: CombinedData;
         }>()
-            .x(d => x(d.data.date))
-            .y0(d => y(d[0]))
-            .y1(d => y(d[1]))
+            .x((d) => x(d.data.date))
+            .y0((d) => y(d[0]))
+            .y1((d) => y(d[1]));
 
         remove();
 
         select(containerG.current)
             .append('g')
             .attr('class', AreaPathClassName)
-            .attr("clip-path", `url(#${clipPathId})`)
+            .attr('clip-path', `url(#${clipPathId})`)
             .selectAll(`path`)
-                .data(series)
-            .join("path")
-                .attr("fill", ({key}) => {
-                    return key === 'Soil Moisture' 
-                        ? UIConfig["soil-moisture-color"] 
-                        : UIConfig["snowpack-color"]
-                })
-                .attr("d", area)
-
+            .data(series)
+            .join('path')
+            .attr('fill', ({ key }) => {
+                return key === 'Soil Moisture'
+                    ? UIConfig['soil-moisture-color']
+                    : UIConfig['snowpack-color'];
+            })
+            .attr('d', area);
     };
 
-    const remove = ()=>{
+    const remove = () => {
+        const areas = select(containerG.current).select(
+            `.${AreaPathClassName}`
+        );
 
-        const areas = select(containerG.current)
-            .select(`.${AreaPathClassName}`);
-        
-        if(areas.size()){
+        if (areas.size()) {
             areas.remove();
         }
     };
 
-    React.useEffect(()=>{
-        if( svgContainerData){
+    React.useEffect(() => {
+        if (svgContainerData) {
             initContainer();
         }
-    }, [ svgContainerData ]);
+    }, [svgContainerData]);
 
-    React.useEffect(()=>{
-        if( svgContainerData && scales && data ){
+    React.useEffect(() => {
+        if (svgContainerData && scales && data) {
             draw();
         }
-    }, [ scales ]);
+    }, [scales]);
 
-    React.useEffect(()=>{
-        if( svgContainerData && scales ){
+    React.useEffect(() => {
+        if (svgContainerData && scales) {
             data ? draw() : remove();
         }
-    }, [ data ]);
+    }, [data]);
 
     return null;
 };

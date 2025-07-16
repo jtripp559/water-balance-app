@@ -6,40 +6,38 @@ import styled from 'styled-components';
 // import { MenuItem } from 'calcite-react/Menu';
 
 import { GldasLayerName } from '../../types';
-import {
-    UIConfig
-} from '../../AppConfig';
+import { UIConfig } from '../../AppConfig';
 
 interface MenuItemData {
     // key: string;
     value: GldasLayerName;
-};
+}
 
 const Data: MenuItemData[] = [
     {
         // key: shortid.generate(),
-        value: 'Soil Moisture'
+        value: 'Soil Moisture',
     },
     {
         // key: shortid.generate(),
-        value: 'Snowpack'
+        value: 'Snowpack',
     },
     {
         // key: shortid.generate(),
-        value: 'Precipitation'
+        value: 'Precipitation',
     },
     {
         // key: shortid.generate(),
-        value: 'Evapotranspiration'
+        value: 'Evapotranspiration',
     },
     {
         // key: shortid.generate(),
-        value: 'Runoff'
+        value: 'Runoff',
     },
     {
         // key: shortid.generate(),
-        value: 'Change in Storage'
-    }
+        value: 'Change in Storage',
+    },
 ];
 
 const StyledSelect = styled.div`
@@ -47,50 +45,48 @@ const StyledSelect = styled.div`
     top: 65px;
     left: 60px;
     width: 198px;
-    background-color: ${UIConfig["theme-color-dark-blue"]};
+    background-color: ${UIConfig['theme-color-dark-blue']};
     color: #fff;
     z-index: 5;
 `;
 
 interface Props {
     activeLayer: GldasLayerName;
-    onChange?: (val:GldasLayerName)=>void;
-};
+    onChange?: (val: GldasLayerName) => void;
+}
 
-const LayerSwitcher:React.FC<Props> = ({
-    activeLayer,
-    onChange
-})=>{
+const LayerSwitcher: React.FC<Props> = ({ activeLayer, onChange }) => {
+    const calciteSelectRef = React.useRef<any>();
 
-    const calciteSelectRef = React.useRef<any>()
-
-
-    React.useEffect(()=>{
-        calciteSelectRef.current.addEventListener('calciteSelectChange', (evt:any)=>{
-            onChange(evt.target.value)
-        })
-    }, [])
+    React.useEffect(() => {
+        calciteSelectRef.current.addEventListener(
+            'calciteSelectChange',
+            (evt: any) => {
+                onChange(evt.target.value);
+            }
+        );
+    }, []);
 
     return (
         <StyledSelect
-            style={{
-                '--calcite-color-foreground-1': UIConfig['theme-color-dark-blue'],
-                '--calcite-color-text-2': '#fff'
-            } as any}
-        >
-            <calcite-select
-                ref={calciteSelectRef}
-            >
+            style={
                 {
-                    Data.map(d=>{
-                        return (
-                            <calcite-option key={d.value} value={d.value}>{d.value}</calcite-option>
-                        )
-                    })
-                }
+                    '--calcite-color-foreground-1':
+                        UIConfig['theme-color-dark-blue'],
+                    '--calcite-color-text-2': '#fff',
+                } as any
+            }
+        >
+            <calcite-select ref={calciteSelectRef}>
+                {Data.map((d) => {
+                    return (
+                        <calcite-option key={d.value} value={d.value}>
+                            {d.value}
+                        </calcite-option>
+                    );
+                })}
             </calcite-select>
         </StyledSelect>
-
     );
 };
 
