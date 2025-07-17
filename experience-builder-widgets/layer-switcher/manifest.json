@@ -1,0 +1,25 @@
+{
+  "name": "water-balance-layer-switcher",
+  "type": "widget",
+  "version": "1.0.0",
+  "exbVersion": "1.13.0",
+  "author": "Water Balance Team",
+  "description": "A layer switcher widget for toggling GLDAS water balance layer visibility and selection.",
+  "copyright": "",
+  "license": "https://github.com/jtripp559/water-balance-app/blob/main/license.txt",
+  "properties": {
+    "supportInlineEditing": false,
+    "supportRepeat": false,
+    "supportAutoHeight": true,
+    "canCrossScopeSelection": true
+  },
+  "translatedLocales": ["en"],
+  "defaultLocale": "en",
+  "dependency": [
+    "jimu-core",
+    "jimu-ui",
+    "jimu-theme",
+    "jimu-arcgis"
+  ],
+  "extensions": []
+}
