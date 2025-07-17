@@ -1,0 +1,266 @@
+{
+  "name": "Water Balance Experience Builder App Example",
+  "description": "Example configuration for creating a complete Water Balance application using the provided widgets",
+  "version": "1.0.0",
+  "widgets": [
+    {
+      "id": "map-widget-1",
+      "type": "water-balance-map-widget",
+      "label": "Water Balance Map",
+      "config": {
+        "webMapId": "fccbb69d8644430894d3cefc50102dd9",
+        "enableClickToQuery": true,
+        "showQueryResults": true,
+        "queryResultsPosition": "top-right",
+        "publishQueryResults": true,
+        "outputDataName": "gldas-query-results"
+      },
+      "layout": {
+        "section": "main",
+        "size": {
+          "width": "70%",
+          "height": "600px"
+        }
+      }
+    },
+    {
+      "id": "search-widget-1",
+      "type": "water-balance-search-widget",
+      "label": "Location Search",
+      "config": {
+        "placeholder": "Search for a location...",
+        "maxResults": 6,
+        "triggerMapClick": true,
+        "zoomLevel": 12,
+        "showTitle": true,
+        "widgetTitle": "Find Location",
+        "showInstructions": true
+      },
+      "layout": {
+        "section": "sidebar-left",
+        "size": {
+          "width": "100%",
+          "height": "200px"
+        }
+      },
+      "connections": {
+        "mapWidget": "map-widget-1"
+      }
+    },
+    {
+      "id": "layer-switcher-1",
+      "type": "water-balance-layer-switcher",
+      "label": "Layer Control",
+      "config": {
+        "showTitle": true,
+        "widgetTitle": "GLDAS Layers",
+        "groupByCategory": true,
+        "showLayerDescriptions": true,
+        "showVisibilityToggles": true,
+        "publishLayerSelection": true,
+        "defaultSelectedLayer": "soil-moisture"
+      },
+      "layout": {
+        "section": "sidebar-left",
+        "size": {
+          "width": "100%",
+          "height": "400px"
+        }
+      },
+      "connections": {
+        "mapWidget": "map-widget-1"
+      }
+    },
+    {
+      "id": "legend-widget-1",
+      "type": "water-balance-legend-widget",
+      "label": "Map Legend",
+      "config": {
+        "legendStyle": "classic",
+        "respectLayerVisibility": true,
+        "showTitle": true,
+        "widgetTitle": "Legend",
+        "showInstructions": false
+      },
+      "layout": {
+        "section": "sidebar-left",
+        "size": {
+          "width": "100%",
+          "height": "300px"
+        }
+      },
+      "connections": {
+        "mapWidget": "map-widget-1"
+      }
+    },
+    {
+      "id": "stacked-area-chart-1",
+      "type": "water-balance-stacked-area-chart",
+      "label": "Water Storage Chart",
+      "config": {
+        "chartTitle": "Water Storage Components",
+        "chartSubtitle": "Soil Moisture and Snowpack",
+        "soilMoistureColor": "#598fb8",
+        "snowpackColor": "#f9f9f9",
+        "showLegend": true,
+        "chartWidth": 800,
+        "chartHeight": 400
+      },
+      "layout": {
+        "section": "bottom-panel",
+        "size": {
+          "width": "50%",
+          "height": "450px"
+        }
+      },
+      "dataConnections": {
+        "locationData": {
+          "sourceWidget": "map-widget-1",
+          "dataPath": "gldas-query-results"
+        }
+      }
+    },
+    {
+      "id": "bar-chart-1",
+      "type": "water-balance-bar-chart",
+      "label": "Water Flux Chart",
+      "config": {
+        "chartTitle": "Monthly Water Flux",
+        "chartSubtitle": "Precipitation, Evapotranspiration, and Runoff",
+        "defaultDataType": "Precipitation",
+        "showControls": true,
+        "precipitationColor": "#5984ca",
+        "evapotranspirationColor": "#b15a4d",
+        "runoffColor": "#8e44ad"
+      },
+      "layout": {
+        "section": "bottom-panel",
+        "size": {
+          "width": "50%",
+          "height": "450px"
+        }
+      },
+      "dataConnections": {
+        "locationData": {
+          "sourceWidget": "map-widget-1",
+          "dataPath": "gldas-query-results"
+        }
+      }
+    },
+    {
+      "id": "line-chart-1",
+      "type": "water-balance-line-chart",
+      "label": "Trend Analysis",
+      "config": {
+        "chartTitle": "Water Balance Trends",
+        "chartSubtitle": "Multi-Year Time Series Analysis",
+        "defaultSelectedSeries": ["Soil Moisture", "Precipitation"],
+        "showControls": true,
+        "showDataPoints": true,
+        "curveType": "monotone"
+      },
+      "layout": {
+        "section": "popup-modal",
+        "trigger": "click-action",
+        "size": {
+          "width": "900px",
+          "height": "600px"
+        }
+      },
+      "dataConnections": {
+        "locationData": {
+          "sourceWidget": "map-widget-1",
+          "dataPath": "gldas-query-results"
+        }
+      }
+    }
+  ],
+  "layout": {
+    "type": "sidebar-with-bottom-panel",
+    "sections": {
+      "main": {
+        "type": "map-container",
+        "allowResize": false
+      },
+      "sidebar-left": {
+        "type": "widget-stack",
+        "width": "30%",
+        "resizable": true,
+        "collapsible": true
+      },
+      "bottom-panel": {
+        "type": "widget-grid",
+        "height": "450px",
+        "resizable": true,
+        "collapsible": true,
+        "columns": 2
+      }
+    }
+  },
+  "theme": {
+    "name": "water-balance-theme",
+    "colors": {
+      "primary": "#0079c1",
+      "secondary": "#598fb8",
+      "background": "#ffffff",
+      "surface": "#f5f5f5",
+      "text": "#333333",
+      "textSecondary": "#666666"
+    },
+    "fonts": {
+      "primary": "Arial, sans-serif",
+      "heading": "Arial, sans-serif"
+    }
+  },
+  "actions": [
+    {
+      "id": "show-trend-analysis",
+      "type": "open-widget",
+      "trigger": "map-click",
+      "sourceWidget": "map-widget-1",
+      "targetWidget": "line-chart-1",
+      "config": {
+        "animationType": "fade-in",
+        "duration": 300
+      }
+    }
+  ],
+  "messaging": {
+    "dataFlows": [
+      {
+        "source": "map-widget-1",
+        "target": ["stacked-area-chart-1", "bar-chart-1", "line-chart-1"],
+        "dataType": "location-query-results",
+        "updateTrigger": "immediate"
+      },
+      {
+        "source": "search-widget-1",
+        "target": "map-widget-1",
+        "dataType": "location-selection",
+        "updateTrigger": "immediate"
+      },
+      {
+        "source": "layer-switcher-1",
+        "target": ["map-widget-1", "legend-widget-1"],
+        "dataType": "layer-visibility-change",
+        "updateTrigger": "immediate"
+      }
+    ]
+  },
+  "installation": {
+    "requirements": [
+      "ArcGIS Experience Builder Developer Edition 1.13+",
+      "Node.js 18+",
+      "Modern web browser with ES2020 support"
+    ],
+    "steps": [
+      "1. Copy all widget folders to your Experience Builder widgets directory",
+      "2. Run 'npm install' in each widget folder",
+      "3. Start Experience Builder in development mode",
+      "4. Create a new app and add the widgets from the widget panel",
+      "5. Configure the widgets using the example configuration above",
+      "6. Connect the Map widget to the Water Balance web map",
+      "7. Test the widget interactions and data flow"
+    ]
+  }
+}
