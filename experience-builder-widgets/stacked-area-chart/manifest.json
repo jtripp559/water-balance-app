@@ -1,0 +1,24 @@
+{
+  "name": "water-balance-stacked-area-chart",
+  "type": "widget",
+  "version": "1.0.0",
+  "exbVersion": "1.13.0",
+  "author": "Water Balance Team",
+  "description": "A stacked area chart widget for visualizing water storage data including soil moisture and snowpack components over time.",
+  "copyright": "",
+  "license": "https://github.com/jtripp559/water-balance-app/blob/main/license.txt",
+  "properties": {
+    "supportInlineEditing": false,
+    "supportRepeat": false,
+    "supportAutoHeight": true,
+    "canCrossScopeSelection": false
+  },
+  "translatedLocales": ["en"],
+  "defaultLocale": "en",
+  "dependency": [
+    "jimu-core",
+    "jimu-ui",
+    "jimu-theme"
+  ],
+  "extensions": []
+}

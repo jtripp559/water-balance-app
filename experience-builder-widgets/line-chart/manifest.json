@@ -1,0 +1,24 @@
+{
+  "name": "water-balance-line-chart",
+  "type": "widget",
+  "version": "1.0.0",
+  "exbVersion": "1.13.0",
+  "author": "Water Balance Team",
+  "description": "A line chart widget for visualizing time-series water balance data trends and comparisons.",
+  "copyright": "",
+  "license": "https://github.com/jtripp559/water-balance-app/blob/main/license.txt",
+  "properties": {
+    "supportInlineEditing": false,
+    "supportRepeat": false,
+    "supportAutoHeight": true,
+    "canCrossScopeSelection": false
+  },
+  "translatedLocales": ["en"],
+  "defaultLocale": "en",
+  "dependency": [
+    "jimu-core",
+    "jimu-ui",
+    "jimu-theme"
+  ],
+  "extensions": []
+}

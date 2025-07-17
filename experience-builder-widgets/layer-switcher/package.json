@@ -1,0 +1,32 @@
+{
+  "name": "water-balance-layer-switcher",
+  "version": "1.0.0",
+  "description": "Water Balance Layer Switcher Widget for ArcGIS Experience Builder",
+  "main": "lib/runtime/widget.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "arcgis",
+    "experience-builder",
+    "widget",
+    "layers",
+    "water-balance",
+    "gldas"
+  ],
+  "author": "Water Balance Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@arcgis/core": "^4.30.8"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.0"
+  },
+  "peerDependencies": {
+    "jimu-core": "*",
+    "jimu-ui": "*",
+    "jimu-theme": "*",
+    "jimu-arcgis": "*"
+  }
+}
